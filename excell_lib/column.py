@@ -1,4 +1,7 @@
-from excell_lib.constants import iter_letters
+from excell_lib.constants import (
+    iter_letters,
+    get_letter,
+)
 
 
 class Column:
@@ -29,16 +32,23 @@ class Column:
         return self._number
 
     def change_coordinate_right(self, number: int):
-        number = number - self._number
-        self._letter = self._get_letter(number)
+        interval_number = number - self._number
+        self._letter = get_letter(number)
         for cell in self._cells:
-            cell.change_formulas_cells(number)
+            self._cells[cell].change_formulas_cells(interval_number)
 
     def change_letter_right(self, letter: str):
         number = self._count_letter_number(letter) - self._number
         self._letter = letter
         for cell in self._cells:
             cell.change_formulas_cells(number)
+
+    def change_letter(self, letter):
+        self._letter = letter
+
+    def clear_cells(self):
+        for cell in self._cells:
+            self._cells[cell].clear()
 
     @staticmethod
     def _count_letter_number(letter: str):
@@ -47,11 +57,3 @@ class Column:
             count += 1
             if item == letter:
                 return count
-
-    @staticmethod
-    def _get_letter(number: int):
-        count = 0
-        for item in iter_letters():
-            count += 1
-            if count == number:
-                return item

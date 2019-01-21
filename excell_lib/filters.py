@@ -7,11 +7,3 @@ def unmerge_filter(coordinate: str):
         if letter in coordinate:
             flag = False
     return flag
-
-
-def not_formula(data):
-    flag = True
-    if isinstance(data, str):
-        if data[0] == '=':
-            flag = False
-    return flag
