@@ -15,30 +15,48 @@ class Cell:
     _data: str = None
     _style = None
 
-    def __init__(self, cell, column_number: int, row_number: int):
+    def __init__(self, cell, row_number: int, column_number: int):
         self._cypher = cell.coordinate
         self._coordinate = [row_number, column_number]
-        self._data = cell.value
+        if cell.value:
+            self._data = cell.value
+        else:
+            self._data = ''
         self._style = cell._style
 
     def clear(self):
-        self._data = None
+        self._data = ''
 
-    def get_data(self):
+    def change_style(self, style):
+        self._style = style
+
+    @property
+    def value(self):
         return str(self._data)
 
-    def get_coordinate(self):
+    @property
+    def coordinate(self):
         return self._coordinate
 
-    def get_cypher(self):
+    @property
+    def cypher(self):
         return self._cypher
 
-    def get_style(self):
+    @property
+    def row_number(self):
+        return self.coordinate[0]
+
+    @property
+    def column_number(self):
+        return self.coordinate[1]
+
+    @property
+    def style(self):
         return self._style
 
-    def change_coordinate(self, cypher, coordinate):
-        self._cypher = cypher
-        self._coordinate = coordinate
+    def change_coordinate(self, letter):
+        self._cypher = f'{letter}{self.coordinate[0]}'
+        self._coordinate[1] += 1
 
     def change_formulas_cells(self, number):
         cells = REGULAR_FORMULAS_CELLS.findall(str(self._data))

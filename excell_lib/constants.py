@@ -9,7 +9,7 @@ REGULAR_LETTERS = re.compile('[^a-zA-Z ]')
 REGULAR_FORMULAS_CELLS = re.compile(r'[A-Z]+[0-9]+')
 ALPHABET = string.ascii_uppercase
 SUPPORT_LETTERS_NUMBER = 1000000
-UNITS = ['m2', 'm']
+UNITS = []
 
 
 def iter_letters():
