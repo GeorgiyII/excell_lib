@@ -25,6 +25,7 @@ def main(file_name):
     table.setup_table(sheet)
     print(table)
     table.add_many_pass_column_right(7, 2)
+    table.add_many_pass_column_right(11, 2)
     print(table.get_row_values(2))
     print(table)
     table.write_table(sheet)

@@ -35,6 +35,9 @@ class Column:
     def number(self):
         return self._number
 
+    def set_number(self, number):
+        self._number = number
+
     def set_letter(self, letter):
         self._letter = letter
 
@@ -44,6 +47,7 @@ class Column:
         for cell in self.cells:
             cell.change_formulas_cells(interval_number)
             cell.change_coordinate(self.letter)
+        self.set_number(number)
 
     def change_letter_right(self, letter: str):
         number = self._count_letter_number(letter) - self._number

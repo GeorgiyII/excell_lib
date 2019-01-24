@@ -32,6 +32,8 @@ class Cell:
 
     @property
     def value(self):
+        if isinstance(self._data, int):
+            return self._data
         return str(self._data)
 
     @property
