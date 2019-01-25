@@ -10,11 +10,6 @@ from excell_lib.constants import (
 
 class Cell:
 
-    _cypher: str = None
-    _coordinate: list = []
-    _data: str = None
-    _style = None
-
     def __init__(self, cell, row_number: int, column_number: int):
         self._cypher = cell.coordinate
         self._coordinate = [row_number, column_number]

@@ -5,6 +5,7 @@ from excell_lib.actions import (
     merge,
     unmerge,
 )
+from table_logic import add_column_with_prices
 
 
 def copy_worksheet(book):
@@ -20,14 +21,15 @@ def copy_worksheet(book):
 def main(file_name):
     book = openpyxl.load_workbook(file_name)
     sheet = copy_worksheet(book)
-    sheet_prices = book.get_sheet_by_name('model')
-    table = Table(sheet, [1, 2, 3])
-    table_prices = Table(sheet=sheet_prices)
     unmerge(sheet)
-    table.add_many_pass_column_right(7, 2)
-    table.add_many_pass_column_right(11, 2)
-    table.write_table(sheet)
-    merge(sheet)
+    sheet_prices = book.get_sheet_by_name('model')
+    table = Table(sheet, [1, 2, 3], 2)
+    table_prices = Table(sheet=sheet_prices)
+    symbol = ';'
+    new_table = add_column_with_prices(table, table_prices, symbol)
+    new_table.write_table(sheet)
+    # table.write_table(sheet)
+    # merge(sheet)
 
     book.save('example.xlsx')
 

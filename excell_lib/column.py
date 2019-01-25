@@ -6,10 +6,6 @@ from excell_lib.constants import (
 
 class Column:
 
-    _letter: str = None
-    _cells = {}
-    _number: int = None
-
     def __init__(self, letter: str, number: int, cells: dict):
         self._letter = letter
         self._cells = cells

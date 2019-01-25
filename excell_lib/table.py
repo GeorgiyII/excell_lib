@@ -10,12 +10,14 @@ import copy
 
 class Table:
 
-    _columns: Dict[int, Type[Column]] = {}
-    _row_number = None
-    _sheet = None
+    column = Column
+    cell = Cell
 
-    def __init__(self, sheet, unit_rows: list=None):
-        self._columns = {}
+    def __init__(self, sheet, unit_rows: list = None, row_number: int = None):
+        self._columns: Dict[int, Type[Column]] = {}
+        self._sheet = sheet
+        self._row_number = sheet.max_row
+        self.row_with_params = row_number
         self.unit_rows = unit_rows
         self.setup_table(sheet)
 
@@ -23,6 +25,10 @@ class Table:
         for column in self.columns:
             print(column)
         return ''
+
+    @property
+    def columns_number(self):
+        return len(self._columns)
 
     @property
     def columns(self):
@@ -37,6 +43,9 @@ class Table:
                     row.append(cell.value)
         return row
 
+    def get_row_with_parameters(self):
+        return self.get_row_values(self.row_with_params)
+
     @property
     def rows(self):
         rows = self._row_number
@@ -44,18 +53,16 @@ class Table:
             yield self.get_row_values(row)
 
     def setup_table(self, sheet):
-        self._save_sheet(sheet)
-        self._setup_row_number(sheet.max_row)
         for column in range(1, sheet.max_column + 1):
             cells = {}
             letter = None
             for row in range(1, sheet.max_row + 1):
                 cell = sheet.cell(row, column)
-                obj = Cell(cell, row, column)
+                obj = self.cell(cell, row, column)
                 cells.update({row: obj})
                 letter = letters.sub('', sheet.cell(row, column).coordinate)
 
-            obj = Column(letter, column, cells)
+            obj = self.column(letter, column, cells)
             self._columns.update({column: obj})
         if self.unit_rows:
             self._setup_units_constants()
@@ -83,12 +90,6 @@ class Table:
     def _setup_units_constants(self):
         for row in self.unit_rows:
             add_units(self.get_row_values(row))
-
-    def _save_sheet(self, sheet):
-        self._sheet = sheet
-
-    def _setup_row_number(self, number):
-        self._row_number = number
 
     def add_many_pass_column_right(self, coordinate, number=1):
         for column in range(coordinate, coordinate + number):
