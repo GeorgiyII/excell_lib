@@ -12,7 +12,7 @@ class Table:
 
     _columns: Dict[int, Type[Column]] = {}
 
-    def __init__(self, unit_rows: list):
+    def __init__(self, unit_rows: list=None):
         self.unit_rows = unit_rows
 
     def __str__(self):
@@ -45,7 +45,8 @@ class Table:
 
             obj = Column(letter, column, cells)
             self._columns.update({column: obj})
-        self._setup_units_constants()
+        if self.unit_rows:
+            self._setup_units_constants()
 
     def _add_pass_column(self, coordinate):
         new_columns = {}
