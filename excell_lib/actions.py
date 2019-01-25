@@ -7,7 +7,6 @@ from excell_lib.constants import UNITS
 def add_units(values: list):
     for value in values:
         UNITS.append(value)
-    print(UNITS)
 
 
 def merge(sheet):

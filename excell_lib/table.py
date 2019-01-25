@@ -11,9 +11,13 @@ import copy
 class Table:
 
     _columns: Dict[int, Type[Column]] = {}
+    _row_number = None
+    _sheet = None
 
-    def __init__(self, unit_rows: list=None):
+    def __init__(self, sheet, unit_rows: list=None):
+        self._columns = {}
         self.unit_rows = unit_rows
+        self.setup_table(sheet)
 
     def __str__(self):
         for column in self.columns:
@@ -33,7 +37,15 @@ class Table:
                     row.append(cell.value)
         return row
 
+    @property
+    def rows(self):
+        rows = self._row_number
+        for row in range(1, rows + 1):
+            yield self.get_row_values(row)
+
     def setup_table(self, sheet):
+        self._save_sheet(sheet)
+        self._setup_row_number(sheet.max_row)
         for column in range(1, sheet.max_column + 1):
             cells = {}
             letter = None
@@ -71,6 +83,12 @@ class Table:
     def _setup_units_constants(self):
         for row in self.unit_rows:
             add_units(self.get_row_values(row))
+
+    def _save_sheet(self, sheet):
+        self._sheet = sheet
+
+    def _setup_row_number(self, number):
+        self._row_number = number
 
     def add_many_pass_column_right(self, coordinate, number=1):
         for column in range(coordinate, coordinate + number):

@@ -22,6 +22,9 @@ class Column:
             result.append(data)
         return str(result)
 
+    def get_cell(self, key):
+        return self._cells[key]
+
     @property
     def letter(self):
         return self._letter
