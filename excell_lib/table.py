@@ -1,5 +1,6 @@
 from excell_lib.constants import (
-    REGULAR_LETTERS as letters
+    REGULAR_LETTERS as letters,
+    get_letter,
 )
 from excell_lib.column import Column
 from excell_lib.cell import Cell
@@ -10,11 +11,8 @@ import copy
 
 class Table:
 
-    column = Column
-    cell = Cell
-
     def __init__(self, sheet, unit_rows: list = None, row_number: int = None):
-        self._columns: Dict[int, Type[Column]] = {}
+        self._columns = {}
         self._sheet = sheet
         self._row_number = sheet.max_row
         self.row_with_params = row_number
@@ -25,6 +23,10 @@ class Table:
         for column in self.columns:
             print(column)
         return ''
+
+    @property
+    def rows_number(self):
+        return self._row_number
 
     @property
     def columns_number(self):
@@ -58,42 +60,53 @@ class Table:
             letter = None
             for row in range(1, sheet.max_row + 1):
                 cell = sheet.cell(row, column)
-                obj = self.cell(cell, row, column)
+                obj = Cell(cell.coordinate, row, column, cell.value, cell._style)
                 cells.update({row: obj})
                 letter = letters.sub('', sheet.cell(row, column).coordinate)
 
-            obj = self.column(letter, column, cells)
+            obj = Column(letter, column, cells)
             self._columns.update({column: obj})
         if self.unit_rows:
             self._setup_units_constants()
 
-    def _add_pass_column(self, coordinate):
+    def add_pass_column(self, coordinate):
         new_columns = {}
         flag = False
-        for column in self._columns:
-            if coordinate == column:
+        for key in self._columns:
+            column = self._columns[key]
+            if column.number == coordinate:
                 flag = True
-                pass_column = copy.deepcopy(self._columns[column])
-                pass_column.clear_cells()
-                new_columns.update({column: pass_column})
-            if flag:
-                key = column + 1
-                moved_column = copy.deepcopy(self._columns[column])
-                moved_column.change_coordinate_right(key)
-                new_column = {key: moved_column}
-            else:
-                new_column = {column: self._columns[column]}
+                new_columns.update({key: column})
+                pass_column = self._add_pass_column(key)
+                new_columns.update(pass_column)
+                for copy_column in self._copy_data_right(key + 1):
+                    new_columns.update(copy_column)
+            if not flag:
+                new_columns.update({key: column})
 
-            new_columns.update(new_column)
         self._columns = new_columns
 
     def _setup_units_constants(self):
         for row in self.unit_rows:
             add_units(self.get_row_values(row))
 
+    def _add_pass_column(self, number):
+        cells = {}
+        for i in range(1, self.rows_number + 1):
+            cell = Cell(f'{get_letter(number + 1)}{number + 1}', i, number + 1)
+            cells.update({i: cell})
+            column = Column(get_letter(number + 1), number + 1, cells)
+        return {number + 1: column}
+
     def add_many_pass_column_right(self, coordinate, number=1):
         for column in range(coordinate, coordinate + number):
-            self._add_pass_column(column)
+            self.add_pass_column(column)
+
+    def _copy_data_right(self, start_column):
+        for i in range(start_column, self.columns_number + 1):
+            column = self._columns[i]
+            column.change_coordinate_right(i + 1)
+            yield {i + 1: column}
 
     def write_table(self, sheet):
         for column in self.columns:

@@ -10,14 +10,14 @@ from excell_lib.constants import (
 
 class Cell:
 
-    def __init__(self, cell, row_number: int, column_number: int):
-        self._cypher = cell.coordinate
+    def __init__(self, coordinate, row_number: int, column_number: int, value='', style=''):
+        self._cypher = coordinate
         self._coordinate = [row_number, column_number]
-        if cell.value:
-            self._data = cell.value
-        else:
+        if not value:
             self._data = ''
-        self._style = cell._style
+        else:
+            self._data = value
+        self._style = style
 
     def clear(self):
         self._data = ''
