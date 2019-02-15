@@ -1,11 +1,5 @@
-# def add_column_with_prices(table, table_prices, symbol):
-#     skipper = 0
-#     materials_row = table.get_row_with_parameters()
-#     materials = _get_next_materials(materials_row, symbol, skipper)
-#     materials_data = _get_materials_data(materials, table_prices)
-
-
-def add_column_with_prices(table, table_prices, symbol):
+def add_column_with_prices(table, table_prices, symbol, coeff_coordinate, coeff_number):
+    # table.add_many_pass_column_right(coeff_coordinate, coeff_number)
     materials_row = table.get_row_with_parameters()
     materials = _get_next_materials(materials_row, symbol)
     materials_data = _get_materials_data(materials, table_prices)
@@ -54,22 +48,3 @@ def _get_materials_data(materials: dict, table_prices):
                     materials_data.update({index + 2: {'name': row[1], 'price': row[2]}})
         materials_full[key] = materials_data
     return materials_full
-
-
-# def _get_next_materials(materials_row, symbol, skipper=0):
-#     skipper = skipper
-#     for index, cell in enumerate(materials_row):
-#         if cell:
-#             if not skipper:
-#                 return {index: cell.split(f'{symbol}')}
-#             skipper -= 1
-#
-#
-# def _get_materials_data(materials: dict, table_prices):
-#     materials_data = {}
-#     for key in materials.keys():
-#         for cypher in materials[key]:
-#             for row in table_prices.rows:
-#                 if cypher in row:
-#                     materials_data.update({key: {'name': row[1], 'price': row[2]}})
-#     return materials_data

@@ -1,12 +1,10 @@
+from excell_lib.actions import add_units
+from excell_lib.cell import Cell
+from excell_lib.column import Column
 from excell_lib.constants import (
     REGULAR_LETTERS as letters,
     get_letter,
 )
-from excell_lib.column import Column
-from excell_lib.cell import Cell
-from excell_lib.actions import add_units
-from typing import Dict, Type
-import copy
 
 
 class Table:
@@ -77,7 +75,8 @@ class Table:
             if column.number == coordinate:
                 flag = True
                 new_columns.update({key: column})
-                pass_column = self._add_pass_column(key)
+                style = column.get_cell(6).style
+                pass_column = self._add_pass_column(key, style)
                 new_columns.update(pass_column)
                 for copy_column in self._copy_data_right(key + 1):
                     new_columns.update(copy_column)
@@ -90,10 +89,10 @@ class Table:
         for row in self.unit_rows:
             add_units(self.get_row_values(row))
 
-    def _add_pass_column(self, number):
+    def _add_pass_column(self, number, style):
         cells = {}
         for i in range(1, self.rows_number + 1):
-            cell = Cell(f'{get_letter(number + 1)}{number + 1}', i, number + 1)
+            cell = Cell(f'{get_letter(number + 1)}{number + 1}', i, number + 1, style=style)
             cells.update({i: cell})
             column = Column(get_letter(number + 1), number + 1, cells)
         return {number + 1: column}
@@ -113,4 +112,3 @@ class Table:
             for cell in column.cells:
                 sheet.cell(cell.row_number, cell.column_number).value = cell.value
                 sheet.cell(cell.row_number, cell.column_number)._style = cell.style
-

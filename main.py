@@ -26,10 +26,9 @@ def main(file_name):
     table = Table(sheet, [1, 2, 3], 2)
     table_prices = Table(sheet=sheet_prices)
     symbol = ';'
-    new_table = add_column_with_prices(table, table_prices, symbol)
+    new_table = add_column_with_prices(table, table_prices, symbol, 4, 3)
     new_table.write_table(sheet)
-    # table.write_table(sheet)
-    # merge(sheet)
+    merge(sheet, [1, 2])
 
     book.save('example.xlsx')
 
