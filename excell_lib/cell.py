@@ -10,8 +10,7 @@ from excell_lib.constants import (
 
 class Cell:
 
-    def __init__(self, coordinate, row_number: int, column_number: int, value='', style=''):
-        self._cypher = coordinate
+    def __init__(self, row_number: int, column_number: int, value='', style=''):
         self._coordinate = [row_number, column_number]
         if not value:
             self._data = ''
@@ -37,10 +36,6 @@ class Cell:
         return self._coordinate
 
     @property
-    def cypher(self):
-        return self._cypher
-
-    @property
     def row_number(self):
         return self.coordinate[0]
 
@@ -52,17 +47,16 @@ class Cell:
     def style(self):
         return self._style
 
-    def change_coordinate(self, letter):
-        self._cypher = f'{letter}{self.coordinate[0]}'
+    def change_coordinate(self):
         self._coordinate[1] += 1
 
-    def change_formulas_cells(self, number):
+    def change_formulas_cells(self):
         cells = REGULAR_FORMULAS_CELLS.findall(str(self._data))
         for cell in cells:
             if cell not in UNITS:
                 letters = REGULAR_LETTERS.sub('', cell)
                 if letters not in NOT_CHANGED_COLUMNS:
-                    new_cell = cell.replace(letters, self._take_next_letter(str(letters), number))
+                    new_cell = cell.replace(letters, self._take_next_letter(str(letters), 1))
                     self._data = self._data.replace(cell, new_cell)
 
     @staticmethod

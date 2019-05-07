@@ -1,46 +1,49 @@
 from excell_lib.actions import add_units
 from excell_lib.cell import Cell
-from excell_lib.column import Column
-from excell_lib.constants import (
-    REGULAR_LETTERS as letters,
-    get_letter,
-)
+from excell_lib.constants import iter_letters
+from beautifultable import BeautifulTable
 
 
 class Table:
 
-    def __init__(self, sheet, unit_rows: list = None, row_number: int = None):
-        self._columns = {}
+    def __init__(self, sheet, unit_rows: list = None, row_number_with_params: int = None):
+        self._cells = {}
         self._sheet = sheet
-        self._row_number = sheet.max_row
-        self.row_with_params = row_number
+        self.row_with_params = row_number_with_params
         self.unit_rows = unit_rows
         self.setup_table(sheet)
 
     def __str__(self):
-        for column in self.columns:
-            print(column)
-        return ''
+        table = BeautifulTable()
+        for row in self.rows:
+            table.append_row(row)
+        return str(table)
 
     @property
     def rows_number(self):
-        return self._row_number
+        prev_key = None
+        count = 0
+        for key in sorted(self._cells.keys()):
+            if key[0] != prev_key:
+                prev_key = key[0]
+                count += 1
+        return count
 
     @property
     def columns_number(self):
-        return len(self._columns)
-
-    @property
-    def columns(self):
-        for column in self._columns:
-            yield self._columns[column]
+        prev_key = None
+        count = 0
+        for key in sorted(self._cells.keys(), key=lambda key: key[1]):
+            if key[1] != prev_key:
+                prev_key = key[1]
+                count += 1
+        return count
 
     def get_row_values(self, row_number):
         row = []
-        for column in self.columns:
-            for cell in column.cells:
-                if cell.row_number == row_number:
-                    row.append(cell.value)
+        for cell in self._cells:
+            if cell[0] == row_number:
+                row.append(self._cells[cell].value)
         return row
 
     def get_row_with_parameters(self):
@@ -48,67 +51,65 @@ class Table:
 
     @property
     def rows(self):
-        rows = self._row_number
-        for row in range(1, rows + 1):
+        for row in range(1, self.rows_number + 1):
             yield self.get_row_values(row)
 
     def setup_table(self, sheet):
         for column in range(1, sheet.max_column + 1):
-            cells = {}
-            letter = None
             for row in range(1, sheet.max_row + 1):
                 cell = sheet.cell(row, column)
-                obj = Cell(cell.coordinate, row, column, cell.value, cell._style)
-                cells.update({row: obj})
-                letter = letters.sub('', sheet.cell(row, column).coordinate)
+                obj = Cell(row, column, cell.value, cell._style)
+                self._cells.update({(row, column): obj})
 
-            obj = Column(letter, column, cells)
-            self._columns.update({column: obj})
         if self.unit_rows:
             self._setup_units_constants()
 
-    def add_pass_column(self, coordinate):
-        new_columns = {}
-        flag = False
-        for key in self._columns:
-            column = self._columns[key]
-            if column.number == coordinate:
-                flag = True
-                new_columns.update({key: column})
-                style = column.get_cell(6).style
-                pass_column = self._add_pass_column(key, style)
-                new_columns.update(pass_column)
-                for copy_column in self._copy_data_right(key + 1):
-                    new_columns.update(copy_column)
-            if not flag:
-                new_columns.update({key: column})
+    def add_pass_column(self, column):
+        new_table = {}
+        if column > self.columns_number:
+            new_table.update(self._add_pass_column_in_the_end(column))
+        for key in self._cells:
+            if key[1] < column:
+                new_table.update({key: self._cells[key]})
+            elif key[1] == column:
+                cell = self._copy_cell_to_next_column(key)
+                new_cell = Cell(key[0], key[1], style=cell._style)
+                new_table.update({key: new_cell})
+                new_table.update({(cell.row_number, cell.column_number): cell})
+            else:
+                cell = self._copy_cell_to_next_column(key)
+                new_table.update({(cell.row_number, cell.column_number): cell})
 
-        self._columns = new_columns
+        self._cells.update(new_table)
+
+    def _add_pass_column_in_the_end(self, column):
+        new_column = {}
+        for row in range(1, self.rows_number + 1):
+            cell = self._cells[(row, column - 1)]
+            new_cell = Cell(row, column, style=cell._style)
+            new_column.update({(row, column): new_cell})
+        return new_column
+
+    def _copy_cell_to_next_column(self, coordinate):
+        cell = self._cells[coordinate]
+        cell.change_formulas_cells()
+        cell.change_coordinate()
+        return cell
 
     def _setup_units_constants(self):
         for row in self.unit_rows:
             add_units(self.get_row_values(row))
 
-    def _add_pass_column(self, number, style):
-        cells = {}
-        for i in range(1, self.rows_number + 1):
-            cell = Cell(f'{get_letter(number + 1)}{number + 1}', i, number + 1, style=style)
-            cells.update({i: cell})
-            column = Column(get_letter(number + 1), number + 1, cells)
-        return {number + 1: column}
-
-    def add_many_pass_column_right(self, coordinate, number=1):
-        for column in range(coordinate, coordinate + number):
-            self.add_pass_column(column)
-
-    def _copy_data_right(self, start_column):
-        for i in range(start_column, self.columns_number + 1):
-            column = self._columns[i]
-            column.change_coordinate_right(i + 1)
-            yield {i + 1: column}
-
     def write_table(self, sheet):
-        for column in self.columns:
-            for cell in column.cells:
-                sheet.cell(cell.row_number, cell.column_number).value = cell.value
-                sheet.cell(cell.row_number, cell.column_number)._style = cell.style
+        for cell in self._cells:
+            cell = self._cells[cell]
+            sheet.cell(cell.row_number, cell.column_number).value = cell.value
+            sheet.cell(cell.row_number, cell.column_number)._style = cell.style
+
+    @staticmethod
+    def _count_letter_number(letter: str):
+        count = 0
+        for item in iter_letters():
+            count += 1
+            if item == letter:
+                return count

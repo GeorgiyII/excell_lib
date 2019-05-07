@@ -1,5 +1,4 @@
-def add_column_with_prices(table, table_prices, symbol, coeff_coordinate, coeff_number):
-    # table.add_many_pass_column_right(coeff_coordinate, coeff_number)
+def add_column_with_prices(table, table_prices, symbol):
     materials_row = table.get_row_with_parameters()
     materials = _get_next_materials(materials_row, symbol)
     materials_data = _get_materials_data(materials, table_prices)
@@ -11,8 +10,8 @@ def add_column_for_new_material(table, materials: dict):
     offset = 0
     for column in materials.keys():
         for add in materials[column]:
-            coordinate = column - 1 + add + offset
-            table.add_many_pass_column_right(coordinate)
+            coordinate = column + add + offset
+            table.add_pass_column(coordinate)
 
         offset += len(materials[column])
     return table
