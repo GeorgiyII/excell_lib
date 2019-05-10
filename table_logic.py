@@ -11,7 +11,7 @@ def add_column_for_new_material(table, materials: dict):
     for column in materials.keys():
         for add in materials[column]:
             coordinate = column + add + offset
-            table.add_pass_column(coordinate)
+            table.add_column(coordinate)
 
         offset += len(materials[column])
     return table

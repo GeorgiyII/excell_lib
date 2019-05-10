@@ -64,16 +64,19 @@ class Table:
         if self.unit_rows:
             self._setup_units_constants()
 
-    def add_pass_column(self, column):
+    def add_column(self, column, column_values=()):
         new_table = {}
         if column > self.columns_number:
-            new_table.update(self._add_pass_column_in_the_end(column))
+            new_table.update(self._add_column_in_the_end(column))
         for key in self._cells:
             if key[1] < column:
                 new_table.update({key: self._cells[key]})
             elif key[1] == column:
                 cell = self._copy_cell_to_next_column(key)
-                new_cell = Cell(key[0], key[1], style=cell._style)
+                value = ""
+                if column_values:
+                    value = column_values[key[0] - 1]
+                new_cell = Cell(key[0], key[1], value=value, style=cell._style)
                 new_table.update({key: new_cell})
                 new_table.update({(cell.row_number, cell.column_number): cell})
             else:
@@ -82,11 +85,14 @@ class Table:
 
         self._cells.update(new_table)
 
-    def _add_pass_column_in_the_end(self, column):
+    def _add_column_in_the_end(self, column, column_values=()):
         new_column = {}
         for row in range(1, self.rows_number + 1):
             cell = self._cells[(row, column - 1)]
-            new_cell = Cell(row, column, style=cell._style)
+            value = ""
+            if column_values:
+                value = column_values[row -1]
+            new_cell = Cell(row, column, value=value, style=cell._style)
             new_column.update({(row, column): new_cell})
         return new_column
 
