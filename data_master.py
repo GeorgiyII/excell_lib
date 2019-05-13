@@ -1,3 +1,5 @@
+from excell_lib.constants import get_letter
+
 
 def get_materials_abbreviation(materials_row, symbol: str):
     materials_cyphers = {}
@@ -9,24 +11,38 @@ def get_materials_abbreviation(materials_row, symbol: str):
     return materials_cyphers
 
 
-def get_materials_data(materials: dict, material_prices):
+def get_materials_data(materials: dict, material_prices, rows_number):
     materials_full = materials
     for key in materials.keys():
         materials_data = {}
         for index, cypher in enumerate(materials[key]):
             for row in material_prices.rows:
                 if cypher.strip() in row:
-                    column_data = _get_column_data(name=row[1], price=row[2])
+                    column_data = _get_column_data(column=index + 2, name=row[1], price=row[2], rows_number=rows_number)
                     materials_data.update({index + 2: column_data})
         materials_full[key] = materials_data
     return materials_full
 
 
-def _get_column_data(name, price):
+def _get_column_data(column, name, price, rows_number):
     column_data = []
-
+    for row in range(1, rows_number + 1):
+        if row < 2:
+            data = ""
+            column_data.append(data)
+        elif row == 2:
+            data = name
+            column_data.append(data)
+        else:
+            data = _formula_material_pricing(row, column, price)
+            column_data.append(data)
     return column_data
 
 
-def _formula_material_pricing(table, price):
-    pass
+def _formula_material_pricing(row, column, price):
+    return 22
+
+
+def _cell_cypher_manager(row: int, column: int):
+    letter = get_letter(column)
+    return f"{letter}{row}"

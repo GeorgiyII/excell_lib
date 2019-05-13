@@ -10,9 +10,10 @@ from data_master import get_materials_abbreviation, get_materials_data
 
 
 def add_column_with_prices(table, table_prices, symbol):
+    rows_number = table.rows_number
     materials_row = table.get_row_with_parameters()
     materials = get_materials_abbreviation(materials_row, symbol)
-    materials_data = get_materials_data(materials, table_prices)
+    materials_data = get_materials_data(materials, table_prices, rows_number)
     new_table = add_column_for_new_material(table, materials_data)
     return new_table
 
@@ -22,7 +23,7 @@ def add_column_for_new_material(table, materials: dict):
     for column in materials.keys():
         for add in materials[column]:
             coordinate = column + add + offset
-            table.add_column(coordinate)
+            table.add_column(coordinate, materials[column][add])
 
         offset += len(materials[column])
     return table
