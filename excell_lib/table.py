@@ -46,8 +46,13 @@ class Table:
                 row.append(self._cells[cell].value)
         return row
 
+    def get_row_value(self, row_number):
+        for cell in self._cells:
+            if cell[0] == row_number:
+                yield self._cells[cell].value
+
     def get_row_with_parameters(self):
-        return self.get_row_values(self.row_with_params)
+        return self.get_row_value(self.row_with_params)
 
     @property
     def rows(self):
