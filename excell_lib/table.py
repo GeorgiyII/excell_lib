@@ -46,13 +46,15 @@ class Table:
                 row.append(self._cells[cell].value)
         return row
 
-    def get_row_value(self, row_number):
-        for cell in self._cells:
-            if cell[0] == row_number:
-                yield self._cells[cell].value
-
     def get_row_with_parameters(self):
-        return self.get_row_value(self.row_with_params)
+        return self.get_row_values(self.row_with_params)
+
+    def get_column(self, column_number):
+        column = []
+        for cell in self._cells:
+            if cell[1] == column_number:
+                column.append(self._cells[cell].value)
+        return column
 
     @property
     def rows(self):
@@ -69,24 +71,32 @@ class Table:
         if self.unit_rows:
             self._setup_units_constants()
 
+    def add_multiple_columns(self, column, columns_value):
+        columns_number = len(columns_value)
+        for number in range(columns_number):
+            column_coordinate = column + number
+            data = columns_value[number]
+            self.add_column(column_coordinate, data)
+
     def add_column(self, column, column_values=()):
         new_table = {}
         if column > self.columns_number:
-            new_table.update(self._add_column_in_the_end(column))
-        for key in self._cells:
-            if key[1] < column:
-                new_table.update({key: self._cells[key]})
-            elif key[1] == column:
-                cell = self._copy_cell_to_next_column(key)
-                value = ""
-                if column_values:
-                    value = column_values[key[0] - 1]
-                new_cell = Cell(key[0], key[1], value=value, style=cell._style)
-                new_table.update({key: new_cell})
-                new_table.update({(cell.row_number, cell.column_number): cell})
-            else:
-                cell = self._copy_cell_to_next_column(key)
-                new_table.update({(cell.row_number, cell.column_number): cell})
+            new_table.update(self._add_column_in_the_end(column, column_values))
+        else:
+            for key in self._cells:
+                if key[1] < column:
+                    new_table.update({key: self._cells[key]})
+                elif key[1] == column:
+                    cell = self._copy_cell_to_next_column(key)
+                    value = ""
+                    if column_values:
+                        value = column_values[key[0] - 1]
+                    new_cell = Cell(key[0], key[1], value=value, style=cell._style)
+                    new_table.update({key: new_cell})
+                    new_table.update({(cell.row_number, cell.column_number): cell})
+                else:
+                    cell = self._copy_cell_to_next_column(key)
+                    new_table.update({(cell.row_number, cell.column_number): cell})
 
         self._cells.update(new_table)
 
@@ -96,7 +106,7 @@ class Table:
             cell = self._cells[(row, column - 1)]
             value = ""
             if column_values:
-                value = column_values[row -1]
+                value = column_values[row - 1]
             new_cell = Cell(row, column, value=value, style=cell._style)
             new_column.update({(row, column): new_cell})
         return new_column

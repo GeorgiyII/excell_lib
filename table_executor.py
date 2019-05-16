@@ -6,28 +6,23 @@ from excell_lib.actions import (
     unmerge,
 )
 
-from data_master import get_materials_abbreviation, get_materials_data
+from data_master import get_materials_data, get_next_abbreviation_pack
 
 
 def add_column_with_prices(table, table_prices, symbol):
     rows_number = table.rows_number
-    materials_row = table.get_row_with_parameters()
-    for materials_abbreviation in materials_row:
-        materials = get_materials_abbreviation(materials_abbreviation, symbol)
-        materials_data = get_materials_data(materials, table_prices, rows_number)
-        new_table = add_column_for_new_material(table, materials_data)
+    new_table = table
+    index = True
+    while index:
+        materials_row = new_table.get_row_with_parameters()
+        table_prices_abbreviation = table_prices.get_column(1)
+        materials, column_number, index = get_next_abbreviation_pack(index, materials_row, table_prices_abbreviation, symbol)
+        index = index
+        if materials and column_number:
+            materials_data = get_materials_data(materials, table_prices, rows_number, column_number)
+            new_table.add_multiple_columns(column_number + 2, materials_data)
+
     return new_table
-
-
-def add_column_for_new_material(table, materials: dict):
-    offset = 0
-    for column in materials.keys():
-        for add in materials[column]:
-            coordinate = column + add + offset
-            table.add_column(coordinate, materials[column][add])
-
-        offset += len(materials[column])
-    return table
 
 
 def copy_worksheet(book):
