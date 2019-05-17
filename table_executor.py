@@ -6,7 +6,7 @@ from excell_lib.actions import (
     unmerge,
 )
 
-from data_master import get_materials_data, get_next_abbreviation_pack
+from data_master import get_materials_data, get_next_abbreviation_pack, get_merge_cells
 
 
 def add_column_with_prices(table, table_prices, symbol):
@@ -45,6 +45,10 @@ def start(file_name):
     symbol = ';'
     new_table = add_column_with_prices(table, table_prices, symbol)
     new_table.write_table(sheet)
-    merge(sheet, [1, 2])
+    merge_rows_numbers = [1, 2]
+    for row_number in merge_rows_numbers:
+        row_data = new_table.get_row_values(row_number)
+        merge_cells = get_merge_cells(row_data, row_number)
+        merge(sheet, merge_cells)
 
     book.save(file_name)

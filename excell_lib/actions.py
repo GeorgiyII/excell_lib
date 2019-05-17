@@ -9,25 +9,12 @@ def add_units(values: list):
         UNITS.append(value)
 
 
-def merge(sheet, rows):
-    start_column = None
-    finish_column = None
-    flag = False
-    for row in rows:
-        for column in range(5, sheet.max_column + 1):
-            value = sheet.cell(row, column).value
-            if value:
-                if flag:
-                    flag = False
-                    sheet.merge_cells(
-                        f'{sheet.cell(row, start_column).coordinate}:{sheet.cell(row, finish_column).coordinate}')
-                    finish_column = None
-                start_column = column
-            else:
-                flag = True
-                finish_column = column
+def merge(sheet, coordinates):
+    for cells_range in coordinates:
         sheet.merge_cells(
-            f'{sheet.cell(row, start_column).coordinate}:{sheet.cell(row, finish_column).coordinate}')
+            f'{sheet.cell(cells_range[0][0], cells_range[0][1]).coordinate}:'
+            f'{sheet.cell(cells_range[1][0], cells_range[1][1]).coordinate}'
+        )
 
 
 def unmerge(sheet):

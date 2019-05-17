@@ -51,3 +51,23 @@ def _formula_material_pricing(row, column, price):
 def _cell_cypher_manager(row: int, column: int):
     letter = get_letter(column)
     return f"{letter}{row}"
+
+
+def get_merge_cells(row_data, row_number):
+    merge_cells = []
+    start_cell = None
+    finish_cell = None
+    for index, data in enumerate(row_data):
+        if index > 3:
+            if data and not start_cell:
+                start_cell = (row_number, index + 1)
+            elif data and start_cell and not finish_cell:
+                finish_cell = (row_number, index)
+            if start_cell and finish_cell:
+                merge_cells.append((start_cell, finish_cell))
+                start_cell = (row_number, index + 1)
+                finish_cell = None
+    if start_cell and not finish_cell:
+        finish_cell = (row_number, len(row_data))
+        merge_cells.append((start_cell, finish_cell))
+    return merge_cells
