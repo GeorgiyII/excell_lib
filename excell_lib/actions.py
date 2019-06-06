@@ -1,12 +1,6 @@
 from excell_lib.filters import (
     unmerge_filter,
 )
-from excell_lib.constants import UNITS
-
-
-def add_units(values: list):
-    for value in values:
-        UNITS.append(value)
 
 
 def merge(sheet, coordinates):
