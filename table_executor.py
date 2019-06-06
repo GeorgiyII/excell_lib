@@ -1,12 +1,12 @@
 import openpyxl
 
-from excell_lib.table import Table
+from data_master import get_materials_data, get_next_abbreviation_pack, get_merge_cells
 from excell_lib.actions import (
     merge,
     unmerge,
 )
-
-from data_master import get_materials_data, get_next_abbreviation_pack, get_merge_cells
+from excell_lib.constants import add_units
+from excell_lib.table import Table
 
 
 def add_column_with_prices(table, table_prices, symbol):
@@ -36,11 +36,15 @@ def copy_worksheet(book):
 
 
 def start(file_name):
+    rows = [1, 2, 3]
     book = openpyxl.load_workbook(file_name)
     sheet = copy_worksheet(book)
     unmerge(sheet)
     sheet_prices = book.get_sheet_by_name('model')
-    table = Table(sheet, [1, 2, 3], 2)
+    table = Table(sheet, 2)
+    for row in rows:
+        constants_data = table.get_row_values(row)
+        add_units(constants_data)
     table_prices = Table(sheet=sheet_prices)
     symbol = ';'
     new_table = add_column_with_prices(table, table_prices, symbol)

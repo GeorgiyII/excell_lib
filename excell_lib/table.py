@@ -1,4 +1,3 @@
-from excell_lib.actions import add_units
 from excell_lib.cell import Cell
 from excell_lib.constants import iter_letters
 from beautifultable import BeautifulTable
@@ -6,11 +5,10 @@ from beautifultable import BeautifulTable
 
 class Table:
 
-    def __init__(self, sheet, unit_rows: list = None, row_number_with_params: int = None):
+    def __init__(self, sheet, row_number_with_params: int = None):
         self._cells = {}
         self._sheet = sheet
         self.row_with_params = row_number_with_params
-        self.unit_rows = unit_rows
         self.setup_table(sheet)
 
     def __str__(self):
@@ -68,9 +66,6 @@ class Table:
                 obj = Cell(row, column, cell.value, cell._style)
                 self._cells.update({(row, column): obj})
 
-        if self.unit_rows:
-            self._setup_units_constants()
-
     def add_multiple_columns(self, column, columns_value):
         columns_number = len(columns_value)
         for number in range(columns_number):
@@ -116,10 +111,6 @@ class Table:
         cell.change_formulas_cells()
         cell.change_coordinate()
         return cell
-
-    def _setup_units_constants(self):
-        for row in self.unit_rows:
-            add_units(self.get_row_values(row))
 
     def write_table(self, sheet):
         for cell in self._cells:
