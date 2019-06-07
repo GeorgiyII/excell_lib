@@ -1,5 +1,5 @@
 from excell_lib.constants import get_letter
-from constants import EURO, FORMULA_PREFIX
+from constants import EURO, FORMULA_PREFIX, MATERIAL_PRICE_NAME
 
 
 def get_next_abbreviation_pack(start_index, materials_row, table_prices_abbreviation, symbol):
@@ -17,14 +17,17 @@ def get_next_abbreviation_pack(start_index, materials_row, table_prices_abbrevia
 def get_materials_data(materials: tuple, material_prices, rows_number, column_number):
     materials_data = []
     for index, cypher in enumerate(materials):
-        for row in material_prices.rows:
+        for row_number, row in enumerate(material_prices.rows):
             if cypher.strip() in row:
-                column_data = _get_column_data(column=column_number, name=row[1], price=row[2], rows_number=rows_number)
+                price_cell = f'{get_letter(3)}{row_number + 1}'
+                column_data = _get_column_data(
+                    column=column_number, name=row[1], price_cell=price_cell, rows_number=rows_number
+                )
                 materials_data.append(column_data)
     return materials_data
 
 
-def _get_column_data(column, name, price, rows_number):
+def _get_column_data(column, name, price_cell, rows_number):
     column_data = []
     for row in range(1, rows_number + 1):
         if row < 2:
@@ -37,14 +40,14 @@ def _get_column_data(column, name, price, rows_number):
             data = EURO
             column_data.append(data)
         else:
-            data = _formula_material_pricing(row, column, price)
+            data = _formula_material_pricing(row, column, price_cell)
             column_data.append(data)
     return column_data
 
 
-def _formula_material_pricing(row, column, price):
+def _formula_material_pricing(row, column, price_cell):
     cell_with_volume = _cell_cypher_manager(row, column)
-    formula = f"{FORMULA_PREFIX}{cell_with_volume}*{price}"
+    formula = f"{FORMULA_PREFIX}{cell_with_volume}*{MATERIAL_PRICE_NAME}!{price_cell}"
     return formula
 
 
