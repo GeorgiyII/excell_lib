@@ -1,7 +1,7 @@
 import openpyxl
 import logging
 
-from app.domain.data_master import get_materials_data, get_next_abbreviation_pack, get_merge_cells
+from service_app.domain.data_master import get_materials_data, get_next_abbreviation_pack, get_merge_cells
 from excell_lib.actions import (
     merge,
     unmerge,

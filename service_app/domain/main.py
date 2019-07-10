@@ -1,7 +1,7 @@
 import logging
 
-from app.domain.table_executor import start
-from app.domain.configs import Config
+from service_app.domain.table_executor import start
+from service_app.domain.configs import Config
 
 
 logging.basicConfig(
