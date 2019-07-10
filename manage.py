@@ -10,7 +10,7 @@ manager = Manager(app)
 @manager.command
 def runserver():
     app.run(
-        host='127.0.0.1',
+        host='0.0.0.0',
         port=int(os.environ.get('PORT', 8000)),
         debug=bool(os.environ.get('DEBUG', ''))
         )
