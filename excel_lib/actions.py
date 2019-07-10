@@ -1,4 +1,4 @@
-from excell_lib.filters import (
+from excel_lib.filters import (
     unmerge_filter,
 )
 

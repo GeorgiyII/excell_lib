@@ -2,12 +2,12 @@ import openpyxl
 import logging
 
 from service_app.domain.data_master import get_materials_data, get_next_abbreviation_pack, get_merge_cells
-from excell_lib.actions import (
+from excel_lib.actions import (
     merge,
     unmerge,
 )
-from excell_lib.constants import add_units
-from excell_lib.table import Table
+from excel_lib.constants import add_units
+from excel_lib.table import Table
 
 
 def add_column_with_prices(table, table_prices, symbol):
@@ -17,7 +17,9 @@ def add_column_with_prices(table, table_prices, symbol):
     while index:
         materials_row = new_table.get_row_with_parameters()
         table_prices_abbreviation = table_prices.get_column(1)
-        materials, column_number, index = get_next_abbreviation_pack(index, materials_row, table_prices_abbreviation, symbol)
+        materials, column_number, index = get_next_abbreviation_pack(
+            index, materials_row, table_prices_abbreviation, symbol
+        )
         index = index
         if materials and column_number:
             materials_data = get_materials_data(materials, table_prices, rows_number, column_number)

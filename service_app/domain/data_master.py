@@ -1,4 +1,4 @@
-from excell_lib.constants import get_letter
+from excel_lib.constants import get_letter
 from service_app.domain.constants import EURO, FORMULA_PREFIX, MATERIAL_PRICE_NAME
 
 

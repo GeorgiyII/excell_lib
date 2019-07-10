@@ -1,4 +1,4 @@
-from excell_lib.constants import (
+from excel_lib.constants import (
     REGULAR_FORMULAS_CELLS,
     REGULAR_LETTERS,
     iter_letters,
