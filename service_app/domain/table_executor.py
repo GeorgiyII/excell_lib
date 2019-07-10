@@ -17,7 +17,9 @@ def add_column_with_prices(table, table_prices, symbol):
     while index:
         materials_row = new_table.get_row_with_parameters()
         table_prices_abbreviation = table_prices.get_column(1)
-        materials, column_number, index = get_next_abbreviation_pack(index, materials_row, table_prices_abbreviation, symbol)
+        materials, column_number, index = get_next_abbreviation_pack(
+            index, materials_row, table_prices_abbreviation, symbol
+        )
         index = index
         if materials and column_number:
             materials_data = get_materials_data(materials, table_prices, rows_number, column_number)

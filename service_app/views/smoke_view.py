@@ -5,5 +5,3 @@ class SmokeView(MethodView):
 
     def get(self):
         return "Hello world"
-
-
