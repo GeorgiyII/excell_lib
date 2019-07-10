@@ -1,4 +1,4 @@
-from excell_lib.constants import ALWAYS_MERGED_LIST
+from excel_lib.constants import ALWAYS_MERGED_LIST
 
 
 def unmerge_filter(coordinate: str):

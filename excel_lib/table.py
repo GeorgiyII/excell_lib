@@ -1,5 +1,5 @@
-from excell_lib.cell import Cell
-from excell_lib.constants import iter_letters
+from excel_lib.cell import Cell
+from excel_lib.constants import iter_letters
 from beautifultable import BeautifulTable
 
 

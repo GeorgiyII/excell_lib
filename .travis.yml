@@ -8,4 +8,5 @@ install:
   - pip install -r requirements.txt
 script:
   - flake8 service_app/
+  - flake8 excell_lib/
   - py.test tests

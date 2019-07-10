@@ -2,12 +2,12 @@ import openpyxl
 import logging
 
 from service_app.domain.data_master import get_materials_data, get_next_abbreviation_pack, get_merge_cells
-from excell_lib.actions import (
+from excel_lib.actions import (
     merge,
     unmerge,
 )
-from excell_lib.constants import add_units
-from excell_lib.table import Table
+from excel_lib.constants import add_units
+from excel_lib.table import Table
 
 
 def add_column_with_prices(table, table_prices, symbol):
