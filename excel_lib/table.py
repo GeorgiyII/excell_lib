@@ -125,3 +125,10 @@ class Table:
             count += 1
             if item == letter:
                 return count
+
+    def preview(self):
+        table = []
+        for row in range(1, self.rows_number + 1):
+            values = self.get_row_values(row)
+            table.append(values)
+        return table

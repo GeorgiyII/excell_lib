@@ -1,17 +1,17 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="h-100">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <title>Hello, world!</title>
+    <title>Excel manager</title>
 </head>
-<body>
+<body class="h-100">
 <!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4" style="height: 8%">
     <div class="container">
-        <a class="navbar-brand" href="#">Excel manager</a>
+        <a class="navbar-brand" href="/">Excel manager</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -37,154 +37,11 @@
     </div>
 </nav>
 <!-- Page Content -->
-<div class="container">
-    <div class="row">
-        <!-- left -->
-        <div class="col-xl-4 col-md-4 mb-4">
-            <div class="card border-0 shadow">
-                <form>
-                    <div class="form-row ml-4 mt-4">
-                        <div class="file-upload-wrapper">
-                            <label class="sr-only" for="inputFile">File Upload</label>
-                            <input type="file" class="form-control-file text-success font-weight-bold" id="inputFile"
-                                   accept="image/*" onchange="readUrl(this)" data-title="Drag and drop a file">
-                        </div>
-                    </div>
-                    <div class="form-row pl-4 pr-4 mt-4">
-                        <div class="form-group col-md-6">
-                            <label for="sheetName">Страница с таблицей</label>
-                            <input class="form-control" id="sheetName" placeholder="Innervagg">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="priceName">Страница с ценами</label>
-                            <input class="form-control" id="priceName" placeholder="Model">
-                        </div>
-                    </div>
-                    <div class="form-row  pl-4 pr-4 mt-2">
-                        <div class="form-group col-md-6">
-                            <label for="rowSelect">Строка с материалами</label>
-                            <select class="form-control" id="rowSelect">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                            </select>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="separationSymbol">Символ разделитель</label>
-                            <input class="form-control" id="separationSymbol" placeholder=";">
-                        </div>
-                    </div>
-                    <div class="form-row  pl-4 pr-4 mt-4">
-                        <button type="submit" class="btn btn-lg btn-block btn-secondary">Go</button>
-                    </div>
-                </form>
-                <div class="container pl-4 pr-4 mt-4">
-                    <h3>Status: <span class="badge badge-success">Success</span></h3>
-                </div>
-                <div class="container pl-4 pr-4 mt-4 mb-4">
-                    <button class="btn btn-lg btn-block btn-secondary">Download file</button>
-                </div>
-            </div>
-        </div>
-        <!-- right -->
-        <div class="col-xl-8 col-md-8 mb-4">
-            <div class="card border-0 shadow">
-                <div class="table-wrapper" style="overflow: scroll; height: 540px">
-
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">First</th>
-                            <th scope="col">Last</th>
-                            <th scope="col">Handle</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>@twitter</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>@twitter</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>@twitter</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>@twitter</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>@twitter</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>@twitter</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>@twitter</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>@twitter</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>@twitter</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>@twitter</td>
-                        </tr>
-                        </tbody>
-                    </table>
-
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="container" style="min-height: 50%; height: 80%">
+    {% block content %}{% endblock content %}
 </div>
 
-<footer id="sticky-footer" class="py-4 bg-dark text-white-50">
+<footer id="footer" class="py-4 bg-dark text-white-50" style="height: 10%">
     <div class="container text-center">
         <small>Copyright &copy; Excel manager</small>
     </div>
@@ -199,9 +56,6 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-<script>
-    $('.inputFile').file_upload();
-</script>
 </body>
 
 </html>
