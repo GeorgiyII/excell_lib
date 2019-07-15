@@ -100,4 +100,3 @@ def modify_table(file_path, sheet_name, sheet_price_name, row_number, separate_s
     config = Config().load_configs(config_data)
     new_table = start_modify(config)
     return new_table
-
