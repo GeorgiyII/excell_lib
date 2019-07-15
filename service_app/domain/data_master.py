@@ -1,5 +1,5 @@
 from excel_lib.constants import get_letter
-from service_app.domain.constants import EURO, FORMULA_PREFIX, MATERIAL_PRICE_NAME
+from service_app.constants import EURO, FORMULA_PREFIX, MATERIAL_PRICE_NAME
 
 
 def get_next_abbreviation_pack(start_index, materials_row, table_prices_abbreviation, symbol):
