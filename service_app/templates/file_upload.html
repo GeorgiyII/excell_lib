@@ -1,0 +1,27 @@
+{% extends "index.html" %}
+{% block content %}
+    <div class="row">
+        <!-- left -->
+        <div class="col-xl-4 col-md-4 mb-4">
+            <div class="card border-0 shadow" style="max-height: 550px">
+                <form action="upload" method="post" enctype="multipart/form-data">
+                    <div class="form-row pl-4 pr-4 mt-4">
+                        <div class="file-upload-wrapper mb-4">
+                            {{ form.file_upload.label(class="sr-only") }}
+                            {{ form.file_upload(class="form-control-file text-success font-weight-bold") }}
+                        </div>
+                        <div class="container pl-4 pr-4 mb-4">
+                            {{ form.submit(class="btn btn-lg btn-block btn-secondary") }}
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- right -->
+        <div class="col-xl-8 col-md-8 mb-4">
+            <div class="card border-0 shadow">
+                Example and instructions
+            </div>
+        </div>
+    </div>
+{% endblock content %}
