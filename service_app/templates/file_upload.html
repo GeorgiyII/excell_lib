@@ -1,27 +1,73 @@
 {% extends "index.html" %}
 {% block content %}
-    <div class="row">
-        <!-- left -->
-        <div class="col-xl-4 col-md-4 mb-4">
-            <div class="card border-0 shadow" style="max-height: 550px">
-                <form action="upload" method="post" enctype="multipart/form-data">
-                    <div class="form-row pl-4 pr-4 mt-4">
-                        <div class="file-upload-wrapper mb-4">
-                            {{ form.file_upload.label(class="sr-only") }}
-                            {{ form.file_upload(class="form-control-file text-success font-weight-bold") }}
-                        </div>
-                        <div class="container pl-4 pr-4 mb-4">
-                            {{ form.submit(class="btn btn-lg btn-block btn-secondary") }}
-                        </div>
+<div class="row">
+    <!-- left -->
+    <div class="col-xl-4 col-md-4 mb-4">
+        <div class="card border-0 shadow" style="max-height: 550px">
+            <form action="upload" method="post" enctype="multipart/form-data">
+                <div class="form-row pl-4 pr-4 mt-4">
+                    <div class="file-upload-wrapper mb-4">
+                        {{ form.file_upload.label(class="sr-only") }}
+                        {{ form.file_upload(class="form-control-file text-success font-weight-bold") }}
                     </div>
-                </form>
-            </div>
+                    <div class="container pl-4 pr-4 mb-4">
+                        {{ form.submit(class="btn btn-lg btn-block btn-secondary") }}
+                    </div>
+                </div>
+            </form>
         </div>
-        <!-- right -->
-        <div class="col-xl-8 col-md-8 mb-4">
-            <div class="card border-0 shadow">
-                Example and instructions
+    </div>
+    <!-- right -->
+    <div class="col-xl-8 col-md-8 mb-4" style="overflow: scroll; max-height: 550px">
+        <div class="card border-0 shadow">
+            <div class="container">
+                <div class="row ml-4 mt-4 mr-4">
+                    <p>Программа обрабатывает страницу excel документа с таблицей расчета гипсовых стен,
+                        имеющюю структуру как показано на изображении ниже, и добавляет столбцы с материалами
+                        стен и формулами расчета цены.</p>
+                </div>
+                <div class="row justify-content-center align-items-center ml-4 mr-4 pt-4">
+                    <div class="col-8">
+                        <p>Для использования программы необходимо создать строку с шифрами материалов
+                            стен.</p>
+                    </div>
+                    <div class="col">
+                        <img src="{{url_for('static', filename='cypher.png')}}" class="img-fluid" alt="source_table">
+                    </div>
+                </div>
+                <div class="row justify-content-center align-items-center ml-4 mr-4 pt-4">
+                    <div class="col-8">
+                        <p>Необходимо создать страницу с таблицей где каждый шифр материала имеет
+                            полное название и цену, которая в последствии будет подвязываться к новым колонкам.</p>
+                    </div>
+                    <div class="col">
+                        <img src="{{url_for('static', filename='model.png')}}" class="img-fluid" alt="source_table">
+                    </div>
+                </div>
+                <div class="row ml-4 mt-4 mr-4">
+                    <p>В результате работы программы создается новая страница в файле Excel,
+                    в связи с этим можно не волноватся о потере данных рабочей таблицы.</p>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row justify-content-center align-items-center mr-4 ml-4 pt-4">
+                    <div class="col-5">
+                        <img src="{{url_for('static', filename='table.png')}}" class="img-fluid" alt="source_table">
+                    </div>
+                    <div class="col">
+                        <img src="{{url_for('static', filename='right_arrow.png')}}" class="img-fluid" alt="arrow">
+                    </div>
+                    <div class="col-6">
+                        <img src="{{url_for('static', filename='new_table.png')}}" class="img-fluid" alt="modify_image">
+                    </div>
+                </div>
+            </div>
+            <div class="container  mr-4 ml-4 mb-4 pt-4">
+                <p>Программа принимает только Excel файлы имеющую структуру описаную выше,
+                    любые другие файлы обрабатыватся не будут, а таблицы с несоответствующей структурой
+                    получат лишь копирование указанной страницы Excel.</p>
             </div>
         </div>
     </div>
+</div>
 {% endblock content %}
