@@ -3,7 +3,7 @@ from functools import wraps
 from flask import abort
 
 from service_app.domain.forms import FileUploadForm
-from service_app.constants import FILE_DIRECTORY
+from service_app.constants import UPLOAD_DIRECTORY
 
 
 def upload_file(f):
@@ -14,7 +14,7 @@ def upload_file(f):
             file_name = form.file_upload.data.filename
             if not file_name:
                 raise abort(400, f"File not upload")
-            file_path = f"{FILE_DIRECTORY}{file_name}"
+            file_path = f"{UPLOAD_DIRECTORY}/{file_name}"
             try:
                 form.file_upload.data.save(file_path)
             except Exception:
