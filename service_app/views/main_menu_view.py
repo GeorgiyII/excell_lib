@@ -4,7 +4,7 @@ from flask.views import MethodView
 from flask import render_template, send_file
 
 from service_app.domain.forms import FileUploadForm, ConfigForm, DownloadForm, get_select_field_list
-from service_app.domain.decorators import upload_file
+from service_app.domain.decorators import upload_file, remove_file
 from service_app.domain.table_executor import get_table_preview, modify_table, get_sheets_list
 from service_app.domain.files import get_file
 
@@ -64,7 +64,7 @@ class FileUploadView(MethodView):
 
 class FileDownloadView(MethodView):
 
-    def post(self, file_name):
-        path = get_file(file_name)
-        logging.info(f"FILE DOWNLOAD: download file: {path} ")
+    @remove_file
+    def post(self, file_name, path):
+        logging.info(f"FILE DOWNLOAD: download file: {file_name} from {path} ")
         return send_file(path)
