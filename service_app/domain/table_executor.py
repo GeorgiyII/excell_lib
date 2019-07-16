@@ -117,3 +117,13 @@ def modify_table(file_path, sheet_name, sheet_price_name, row_number, separate_s
     config = Config().load_configs(config_data)
     new_table = start_modify(config)
     return new_table
+
+
+def get_sheets_list(file_path):
+    try:
+        book = openpyxl.load_workbook(file_path)
+    except FileNotFoundError:
+        abort(404, f"File {file_path} not found")
+    except InvalidFileException:
+        abort(400, f"File {file_path} has wrong format. Supported formats are: .xlsx,.xlsm,.xltx,.xltm")
+    return book.sheetnames

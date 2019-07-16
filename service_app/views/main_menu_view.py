@@ -3,9 +3,9 @@ import logging
 from flask.views import MethodView
 from flask import render_template, send_file
 
-from service_app.domain.forms import FileUploadForm, ConfigForm, DownloadForm
+from service_app.domain.forms import FileUploadForm, ConfigForm, DownloadForm, get_select_field_list
 from service_app.domain.decorators import upload_file
-from service_app.domain.table_executor import get_table_preview, modify_table
+from service_app.domain.table_executor import get_table_preview, modify_table, get_sheets_list
 from service_app.domain.files import get_file
 
 
@@ -44,8 +44,14 @@ class FileUploadView(MethodView):
 
     @upload_file
     def post(self, file_name, file_path):
+        sheets_names = get_sheets_list(file_path)
+        sheets_list = get_select_field_list(sheets_names)
         table_preview = get_table_preview(file_path)
+        row_list = get_select_field_list(table_preview)
         form = ConfigForm(csrf_enabled=False)
+        form.row_number.choices = row_list
+        form.sheet_name.choices = sheets_list
+        form.sheet_price_name.choices = sheets_list
         file = {
             "name": file_name
         }
