@@ -1,4 +1,5 @@
 from flask import Blueprint, Flask
+
 from service_app.views.smoke_view import SmokeView
 from service_app.views.main_menu_view import MainMenuView, FileUploadView, FileDownloadView, ConfigView
 
