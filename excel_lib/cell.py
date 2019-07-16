@@ -26,10 +26,7 @@ class Cell:
 
     @property
     def value(self):
-        if isinstance(self._data, float):
-            return str(self._data).replace(".", ",")
-        else:
-            return self._data
+        return self._data
 
     @property
     def coordinate(self):
