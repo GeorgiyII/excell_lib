@@ -14,4 +14,3 @@ DOLLAR = "$"
 
 # path to upload files
 UPLOAD_DIRECTORY = "files"
-FILE_DIRECTORY = "files/"
