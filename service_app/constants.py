@@ -14,3 +14,6 @@ DOLLAR = "$"
 
 # path to upload files
 UPLOAD_DIRECTORY = "files"
+
+# Supported formats
+SUPPORTED_FORMATS = [".xlsx", ".xlsm", ".xltx", "xltm"]
