@@ -1,3 +1,5 @@
+import logging
+
 from flask.views import MethodView
 from flask import render_template, send_file
 
@@ -11,27 +13,31 @@ class MainMenuView(MethodView):
 
     def get(self):
         form = FileUploadForm(csrf_enabled=False)
-        return render_template('file_upload.html', form=form, table=None)
+        return render_template('file_upload.html', form=form)
 
 
 class ConfigView(MethodView):
 
     def post(self, file_name):
         form = ConfigForm(csrf_enabled=False)
-        file = get_file(file_name)
+        file_path = get_file(file_name)
+        logging.info(f"File {file_name} have path: {file_path}")
         sheet_name = form.sheet_name.data
         sheet_price_name = form.sheet_price_name.data
         row_number = form.row_number.data
         separate_symbol = form.separate_symbol.data
-        table = modify_table(file, sheet_name, sheet_price_name, row_number, separate_symbol)
+        logging.info(f"Configs: sheet_name: {sheet_name}, sheet_price_name: {sheet_price_name},"
+                     f" row_number: {row_number}, separate_symbol: {separate_symbol}")
+        table = modify_table(file_path, sheet_name, sheet_price_name, row_number, separate_symbol)
         file = {
             "name": file_name
         }
-        table = {
+        table_kwargs = {
             "table": table
         }
+        logging.info(f"CONFIG:   Template file: {file}, table: {table_kwargs}")
         download_form = DownloadForm(csrf_enabled=False)
-        return render_template('file_download.html', table=table, file=file, form=download_form)
+        return render_template('file_download.html', table=table_kwargs, file=file, form=download_form)
 
 
 class FileUploadView(MethodView):
@@ -46,6 +52,7 @@ class FileUploadView(MethodView):
         table = {
             "table": table_preview
         }
+        logging.info(f"FILE UPLOAD:  Template file: {file}, table: {table}")
         return render_template('config.html', form=form, table=table, file=file)
 
 
@@ -53,4 +60,5 @@ class FileDownloadView(MethodView):
 
     def post(self, file_name):
         path = get_file(file_name)
+        logging.info(f"FILE DOWNLOAD: download file: {path} ")
         return send_file(path)
