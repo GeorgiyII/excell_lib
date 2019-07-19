@@ -1,0 +1,12 @@
+version: '2'
+services:
+    web:
+        build: .
+        ports:
+            - "5000:$PORT"
+        volumes:
+            - .:/code
+        environment:
+            - DEBUG=1
+            - PORT=5000
+            

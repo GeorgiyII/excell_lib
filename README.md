@@ -19,12 +19,15 @@ your ciphers will match the material name and price. See pictures below.
 
 <h2>Installing</h2>
 
-Need Python 3.7+ versions
-
 Download or clone this repository:
 ```
 $ git clone https://github.com/GeorgiyII/excell_lib.git
 ```
+
+<h3>Python run</h3>
+
+Need Python 3.7+ versions
+
 Install requirements using pip:
 ```
 $ cd excell_lib
@@ -37,6 +40,13 @@ Run app:
 $ python3 manage.py runserver
 ```
 
+<h3>Docker run</h3>
+
+Run app:
+```
+$ cd excell_lib
+$ docker-compose up
+```
 
 <h2>Links</h2>
 [Runing app on Heroku](https://excel-manager.herokuapp.com)
